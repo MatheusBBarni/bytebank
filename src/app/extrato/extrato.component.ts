@@ -1,7 +1,7 @@
-import { TransferenciaService } from './../services/transferencia.service';
 import { Component, OnInit } from '@angular/core';
 
-type TransferenciaValue = { valor: number; destino: number; data: Date };
+import { TransferenciaService } from './../services/transferencia.service';
+import { Transferencia } from '../models/Transferencia.model';
 
 @Component({
   selector: 'app-extrato',
@@ -9,11 +9,15 @@ type TransferenciaValue = { valor: number; destino: number; data: Date };
   styleUrls: ['./extrato.component.scss'],
 })
 export class ExtratoComponent implements OnInit {
-  transferencias: Array<TransferenciaValue> = [];
+  transferencias: Array<Transferencia> = [];
 
   constructor(private readonly transferenciaService: TransferenciaService) {}
 
   ngOnInit(): void {
-    this.transferencias = this.transferenciaService.getTransferencias();
+    this.transferenciaService
+      .getTransferencias()
+      .subscribe((transferencias) => {
+        this.transferencias = transferencias;
+      });
   }
 }
